@@ -30,9 +30,9 @@ subprojects {
     apply(plugin = "com.aliucord.gradle")
 
     aliucord {
-        author("DISCORD USERNAME", 123456789L)
-        updateUrl.set("https://raw.githubusercontent.com/USERNAME/REPONAME/builds/updater.json")
-        buildUrl.set("https://raw.githubusercontent.com/USERNAME/REPONAME/builds/%s.zip")
+        author("scruz", 794527403580981248L)
+        updateUrl.set("https://raw.githubusercontent.com/scrazzz/AliucordPlugins/builds/updater.json")
+        buildUrl.set("https://raw.githubusercontent.com/scrazzz/AliucordPlugins/builds/%s.zip")
     }
 
     android {
