@@ -19,7 +19,7 @@ public class GoogleIt extends Plugin {
     @Override
     public void start(Context context) {
         commands.registerCommand("GoogleIt", "Generates a google.it link.", Collections.singletonList(CommandsAPI.requiredMessageOption), args -> {
-            String msg = (String) args.get("query");
+            String msg = (String) args.get("message");
             if (msg == null) return new CommandsAPI.CommandResult(msg);
             String UrlResult = null;
             try {
