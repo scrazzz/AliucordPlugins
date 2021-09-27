@@ -1,5 +1,7 @@
+rootProject.name = "AliucordPlugins"
+
 include(":HelloWorld")
 project(":HelloWorld").projectDir = File("./HelloWorld")
 
-rootProject.name = "AliucordPlugins"
 include(":GoogleIt")
+project(":GoogleIt").projectDir = File("./GoogleIt")
