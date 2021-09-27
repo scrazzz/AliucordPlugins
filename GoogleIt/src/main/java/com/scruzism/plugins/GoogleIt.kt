@@ -1,7 +1,6 @@
-package com.aliucord.plugins
+package com.scruzism.plugins
 
 import android.content.Context
-//import androidx.annotation.NonNull
 
 import com.aliucord.Http
 import com.aliucord.api.CommandsAPI
