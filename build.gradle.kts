@@ -38,7 +38,7 @@ subprojects {
 
     aliucord {
         val baseGithubUrl = "https://raw.githubusercontent.com/scrazzz/AliucordPlugins"
-        author("scrzu", 794527403580981248L)
+        author("scruz", 794527403580981248L)
         updateUrl.set("$baseGithubUrl/builds/updater.json")
         buildUrl.set("$baseGithubUrl/builds/%s.zip")
     }
