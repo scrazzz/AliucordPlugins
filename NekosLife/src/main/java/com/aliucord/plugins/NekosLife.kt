@@ -106,7 +106,7 @@ class NekosLife : Plugin() {
                         "https://nekos.life/api/v2/img/${choosen}",
                         Result::class.java
                 ).url
-                CommandsAPI.CommandResult(result, null, ctx.getBoolOrDefault("shouldSend", false))
+                CommandsAPI.CommandResult(result, null, ctx.getBoolOrDefault("send", false))
             }
             catch (throwable: Throwable) {
                 throwable.printStackTrace()
