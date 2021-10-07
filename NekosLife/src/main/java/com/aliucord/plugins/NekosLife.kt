@@ -3,13 +3,17 @@ package com.aliucord.plugins
 import android.content.Context
 
 import com.aliucord.Http
+import com.aliucord.Constants
 import com.aliucord.api.CommandsAPI
 import com.aliucord.entities.Plugin
+import com.aliucord.entities.MessageEmbedBuilder
 import com.aliucord.Utils.createCommandChoice
 import com.aliucord.annotations.AliucordPlugin
 
 import com.discord.models.commands.ApplicationCommandOption
 import com.discord.api.commands.ApplicationCommandType
+
+import java.util.*
 
 data class Result(
         val url: String
@@ -104,13 +108,32 @@ class NekosLife : Plugin() {
             try {
                 val result = Http.simpleJsonGet(
                         "https://nekos.life/api/v2/img/${choosen}",
-                        Result::class.java
-                ).url
-                CommandsAPI.CommandResult(result, null, ctx.getBoolOrDefault("send", false))
-            }
-            catch (throwable: Throwable) {
+                        Result::class.java).url
+
+                if (ctx.getChannel().guildId == Constants.ALIUCORD_GUILD_ID) {
+                    var embed = listOf(
+                            MessageEmbedBuilder()
+                                    .setColor(Random().nextInt(0xffffff + 1))
+                                    .setImage(result)
+                                    .setFooter("Won't send image/gif to chat in Aliucord server")
+                                    .build()
+                    )
+                    return@registerCommand CommandsAPI.CommandResult(null, embed, false)
+                } else {
+                    var send = ctx.getBoolOrDefault("send", false)
+                    if (send == false) {
+                        var embed = listOf(
+                                MessageEmbedBuilder()
+                                        .setColor(Random().nextInt(0xffffff + 1))
+                                        .setImage(result)
+                                        .build()
+                        )
+                        return@registerCommand CommandsAPI.CommandResult(null, embed, false)
+                    } else { return@registerCommand CommandsAPI.CommandResult(result, null, send) }
+                }
+            } catch (throwable: Throwable) {
                 throwable.printStackTrace()
-                CommandsAPI.CommandResult("Oops, an error occured.", null, false)
+                return@registerCommand CommandsAPI.CommandResult("Oops, an error occured.", null, false)
             }
         }
     }
