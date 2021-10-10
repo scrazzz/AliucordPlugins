@@ -26,6 +26,7 @@ package com.aliucord.plugins
 
 import android.content.Context
 
+import com.aliucord.Utils
 import com.aliucord.api.CommandsAPI
 import com.aliucord.entities.Plugin
 import com.aliucord.annotations.AliucordPlugin
@@ -36,15 +37,16 @@ import com.discord.api.commands.ApplicationCommandType
 class Capitalize : Plugin() {
 
     override fun start(ctx: Context) {
-        val message = ApplicationCommandOption(
+        val message = Utils.CreateCommandOption(
                 ApplicationCommandType.STRING,
                 "message",
                 "Your message",
                 null,
                 true,
                 false,
-                null,
-                null
+                emptyList(),
+                emptyList(),
+                emptyList()
         )
         commands.registerCommand(
                 "capitalize", "Capitalize every word in your message", listOf(message)
