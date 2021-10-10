@@ -37,7 +37,7 @@ import com.discord.api.commands.ApplicationCommandType
 class Capitalize : Plugin() {
 
     override fun start(ctx: Context) {
-        val message = Utils.CreateCommandOption(
+        val message = Utils.createCommandOption(
                 ApplicationCommandType.STRING,
                 "message",
                 "Your message",
@@ -53,8 +53,8 @@ class Capitalize : Plugin() {
         ) {
             ctx -> try {
                 val message = ctx.getRequiredString("message")
-                val to_send = message.capitalizeWords()
-                CommandsAPI.CommandResult(to_send)
+                val toSend = message.capitalizeWords()
+                CommandsAPI.CommandResult(toSend)
             } catch (t: Throwable) {
                 t.printStackTrace()
                 CommandsAPI.CommandResult("An error occured :/", null, false)
