@@ -66,11 +66,15 @@ subprojects {
     }
 
     dependencies {
-        "discord"("com.discord:discord:aliucord-SNAPSHOT")
-        "implementation"("com.github.Aliucord:Aliucord:main-SNAPSHOT")
+        val discord by configurations
+        val implementation by configurations
 
-        "implementation"("androidx.appcompat:appcompat:1.3.1")
-        "implementation"("com.google.android.material:material:1.4.0")
+        discord("com.discord:discord:aliucord-SNAPSHOT")
+        implementation("com.github.Aliucord:Aliucord:main-SNAPSHOT")
+
+        implementation("androidx.appcompat:appcompat:1.3.1")
+        implementation("com.google.android.material:material:1.4.0")
+        implementation("androidx.constraintlayout:constraintlayout:2.1.1")
     }
 }
 
