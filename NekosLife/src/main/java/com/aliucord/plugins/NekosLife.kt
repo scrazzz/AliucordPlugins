@@ -88,7 +88,7 @@ class NekosLife : Plugin() {
                 emptyList(),
                 choices,
                 emptyList(),
-                true
+                false
         )
         val shouldSend = Utils.createCommandOption(
                 ApplicationCommandType.BOOLEAN,
