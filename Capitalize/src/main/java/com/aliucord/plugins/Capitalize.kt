@@ -30,7 +30,6 @@ import com.aliucord.Utils
 import com.aliucord.api.CommandsAPI
 import com.aliucord.entities.Plugin
 import com.aliucord.annotations.AliucordPlugin
-import com.discord.models.commands.ApplicationCommandOption
 import com.discord.api.commands.ApplicationCommandType
 
 @AliucordPlugin
