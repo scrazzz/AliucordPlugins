@@ -2,6 +2,7 @@ package com.aliucord.plugins
 
 import android.content.Context
 
+import com.aliucord.Utils
 import com.aliucord.Http
 import com.aliucord.Constants
 import com.aliucord.api.CommandsAPI
@@ -10,7 +11,6 @@ import com.aliucord.entities.MessageEmbedBuilder
 import com.aliucord.Utils.createCommandChoice
 import com.aliucord.annotations.AliucordPlugin
 
-import com.discord.models.commands.ApplicationCommandOption
 import com.discord.api.commands.ApplicationCommandType
 
 import java.util.*
@@ -78,25 +78,29 @@ class NekosLife : Plugin() {
                 createCommandChoice("woof", "woof"),
                 createCommandChoice("yuri", "yuri")
         )
-        val args = ApplicationCommandOption(
+        val args = Utils.createCommandOption(
                 ApplicationCommandType.STRING,
                 "category",
                 "Category of image/gif to get",
                 null,
                 true,
                 false,
+                emptyList(),
                 choices,
-                null
+                emptyList(),
+                true
         )
-        val shouldSend = ApplicationCommandOption(
+        val shouldSend = Utils.createCommandOption(
                 ApplicationCommandType.BOOLEAN,
                 "send",
                 "Send to chat (WARNING: Use NSFW channel)",
                 null,
                 false,
                 false,
-                null,
-                null
+                emptyList(),
+                emptyList(),
+                emptyList(),
+                false
         )
         commands.registerCommand(
                 "nekoslife",
@@ -133,7 +137,7 @@ class NekosLife : Plugin() {
                 }
             } catch (throwable: Throwable) {
                 throwable.printStackTrace()
-                return@registerCommand CommandsAPI.CommandResult("Oops, an error occured.", null, false)
+                return@registerCommand CommandsAPI.CommandResult("Oops, an error occured.", null, false, "NekosLife")
             }
         }
     }
