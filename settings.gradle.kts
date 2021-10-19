@@ -8,3 +8,6 @@ project(":Capitalize").projectDir = File("./Capitalize")
 
 include(":NekosLife")
 project(":NekosLife").projectDir = File("./NekosLife")
+
+include(":Calc")
+project(":Calc").projectDir = File("./Calc")
