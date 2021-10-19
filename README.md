@@ -6,3 +6,6 @@ Capitalize every word in your message.
 
 ## [`NekosLife`](https://github.com/scrazzz/AliucordPlugins/blob/builds/NekosLife.zip?raw=true)
 Gets images/gifs from nekos.life API. -- ⚠️ NSFW plugin
+
+## [`Calc`](https://github.com/scrazzz/AliucordPlugins/blob/builds/Calc.zip?raw=true)
+A simple calculator to do simple calculations
