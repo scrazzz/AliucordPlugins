@@ -11,3 +11,6 @@ project(":NekosLife").projectDir = File("./NekosLife")
 
 include(":Calc")
 project(":Calc").projectDir = File("./Calc")
+
+include(":Ip")
+project(":Ip").projectDir = File("./Ip")
