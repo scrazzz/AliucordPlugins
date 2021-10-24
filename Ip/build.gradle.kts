@@ -1,4 +1,4 @@
-version = "1.0.0"
+version = "2.0.0"
 description = "Get details about IPv4/IPv6 address or a domain name."
 
 aliucord.changelog.set(
