@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2021 scrazzz
+ * Licensed under the MIT License
+ */
+
 package com.aliucord.plugins
 
 import android.content.Context
@@ -10,23 +15,15 @@ import com.aliucord.Http
 import com.aliucord.annotations.AliucordPlugin
 
 import com.discord.api.commands.ApplicationCommandType
-
-class Result(val queryresult: QueryResult) {
-    class QueryResult(val inputstring: String, val pods: List<Pod>)
-    class Pod(val subpods: List<SubPods>)
-    class SubPods(val plaintext: String)
-}
-
-private fun fmtSend(data: Result): String {
-    return StringBuilder()
-            .append("**Input:**\n`${data.queryresult.inputstring}`\n")
-            .append("**Output:**\n`${data.queryresult.pods[1].subpods[0].plaintext}`")
-            .toString()
-}
+import java.io.IOException
 
 @AliucordPlugin
 class Calc : Plugin() {
+
     private val LOGGER = Logger("Calc")
+    init {
+        settingsTab = SettingsTab(PluginSettings::class.java).withArgs(settings)
+    }
 
     override fun start(ctx: Context) {
         val args = listOf(
@@ -46,30 +43,27 @@ class Calc : Plugin() {
                 "calc",
                 "Calculate your answer using wolfram API",
                 args
-        ) { ctx -> try {
-            val url = Http.QueryBuilder("https://api.wolframalpha.com/v2/query")
-                    .append("input", ctx.getRequiredString("input"))
-                    .append("format", "plaintext")
-                    .append("output", "JSON")
-                    .append("appid", "no")
-                    .toString()
+        ) { ctx ->
+            val input = ctx.getRequiredString("input")
+            val send = ctx.getBoolOrDefault("send", false)
+
+            val url = Http.QueryBuilder("https://api.wolframalpha.com/v1/result")
+                    .append("appid", settings.getString("appid", null))
+                    .append("i", input).toString()
+            val result = Http.Request(url).execute()
+
             try {
-                val result = Http.Request(url, "GET").execute().json(Result::class.java)
-                val toSend = fmtSend(result)
-                CommandResult(toSend)
-            } catch (t: Throwable) {
-                val resultAgain = Http.Request(url, "GET").execute().text()
-                if ("Invalid appid" in resultAgain) {
-                    CommandResult("An error occurred: `Invalid API Key`\nCheck Debug Logs for info.")
-                } else {
-                    CommandResult("An error occurred. Check Debug Logs.")
+                CommandResult(result.text(), null, send)
+            }
+            catch (ex: IOException) {
+                if (ex is Http.HttpException) {
+                    LOGGER.error((ex))
+                    CommandResult(ex.message, null, false, "Calc")
                 }
+                LOGGER.error(ex)
+                CommandResult("An error occured. ```\n${ex.message}\n```", null, false, "Calc")
             }
         }
-        catch (t: Throwable) {
-            LOGGER.error(t)
-            CommandResult("An error occurred.", null, false)
-        } }
     }
 
     override fun stop(ctx: Context) = commands.unregisterAll()
