@@ -16,6 +16,6 @@ Help - [Download](https://github.com/scrazzz/AliucordPlugins/blob/builds/Ip.zip?
 - Get details about IPv4/IPv6 address or a domain name.
 
 ## Calc
-[Help]('https://github.com/scrazzz/AliucordPlugins/tree/main/Calc/README.md) - [Download](https://github.com/scrazzz/AliucordPlugins/blob/builds/Calc.zip?raw=true)
+[Help](https://github.com/scrazzz/AliucordPlugins/tree/main/Calc/README.md) - [Download](https://github.com/scrazzz/AliucordPlugins/blob/builds/Calc.zip?raw=true)
 - Calculate your question using Wolfram API.
 
