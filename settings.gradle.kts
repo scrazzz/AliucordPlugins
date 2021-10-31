@@ -14,3 +14,6 @@ project(":Calc").projectDir = File("./Calc")
 
 include(":Ip")
 project(":Ip").projectDir = File("./Ip")
+
+include(":UITH")
+project(":UITH").projectDir = File("./UITH")
