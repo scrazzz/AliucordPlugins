@@ -2,25 +2,45 @@ package com.aliucord.plugins
 
 import android.content.Context
 
-import com.aliucord.Utils
 import com.aliucord.Http
-import com.aliucord.Constants
-import com.aliucord.api.CommandsAPI
+import com.aliucord.Utils
+import com.aliucord.Logger
 import com.aliucord.entities.Plugin
+import com.aliucord.Constants.ALIUCORD_GUILD_ID
 import com.aliucord.entities.MessageEmbedBuilder
-import com.aliucord.Utils.createCommandChoice
 import com.aliucord.annotations.AliucordPlugin
+import com.aliucord.Utils.createCommandChoice
+import com.aliucord.api.CommandsAPI.CommandResult
 
 import com.discord.api.commands.ApplicationCommandType
+import com.discord.api.message.embed.MessageEmbed
 
-import java.util.*
+class Result(val url: String)
 
-data class Result(
-        val url: String
-)
+private fun buildEmbeds(urls: MutableList<String>, text: String? = null): List<MessageEmbed> {
+    val embedList = mutableListOf<MessageEmbed>()
+    for (url in urls) {
+        val embed = MessageEmbedBuilder().setImage(url).setRandomColor()
+        if (text != null) { embed.apply { embed.setFooter(text) } }
+        embedList.add(embed.build())
+    }
+    return embedList
+}
+
+private fun makeReq(chosen: String, count: Long): List<String> {
+    val urls = mutableListOf<String>()
+    for (i in 0 until (count - 1)) {
+        Thread.sleep(2_000)
+        val result = Http.simpleJsonGet("https://nekos.life/api/v2/img/$chosen", Result::class.java)
+        urls.add(result.url)
+    }
+    return urls
+}
 
 @AliucordPlugin
 class NekosLife : Plugin() {
+
+    private val LOG = Logger("NekosLife")
 
     override fun start(ctx: Context) {
         val choices = listOf(
@@ -78,66 +98,63 @@ class NekosLife : Plugin() {
                 createCommandChoice("woof", "woof"),
                 createCommandChoice("yuri", "yuri")
         )
-        val args = Utils.createCommandOption(
-                ApplicationCommandType.STRING,
-                "category",
-                "Category of image/gif to get",
-                null,
-                true,
-                false,
-                emptyList(),
-                choices,
-                emptyList(),
-                false
+        val limitChoices = listOf(
+                createCommandChoice("2", "2"),
+                createCommandChoice("5", "5"),
+                createCommandChoice("8", "8"),
+                createCommandChoice("10", "10")
         )
-        val shouldSend = Utils.createCommandOption(
-                ApplicationCommandType.BOOLEAN,
-                "send",
-                "Send to chat (WARNING: Use NSFW channel)",
-                null,
-                false,
-                false,
-                emptyList(),
-                emptyList(),
-                emptyList(),
-                false
+
+        val args = listOf(
+                Utils.createCommandOption(
+                        ApplicationCommandType.STRING,
+                        "category",
+                        "Category of image/gif to get",
+                        required = true,
+                        choices = choices
+                ),
+                Utils.createCommandOption(
+                        ApplicationCommandType.BOOLEAN,
+                        "send",
+                        "Send to chat (WARNING: Use NSFW channel)"
+                ),
+                Utils.createCommandOption(
+                        ApplicationCommandType.STRING,
+                        "limit",
+                        "The limit of results to get. Default (1)",
+                        choices = limitChoices
+                )
         )
         commands.registerCommand(
                 "nekoslife",
                 "Get images/gifs from nekos.life",
-                listOf(args, shouldSend)
+                args
         )
         { ctx ->
-            val choosen = ctx.getRequiredString("category")
+            val chosen = ctx.getRequiredString("category")
+            val send   = ctx.getBoolOrDefault("send", false)
+            val limit  = ctx.getLongOrDefault("limit", 2)
+            val urls   = makeReq(chosen, limit)
             try {
-                val result = Http.simpleJsonGet(
-                        "https://nekos.life/api/v2/img/${choosen}",
-                        Result::class.java).url
-
-                if (ctx.getChannel().guildId == Constants.ALIUCORD_GUILD_ID) {
-                    var embed = listOf(
-                            MessageEmbedBuilder()
-                                    .setColor(Random().nextInt(0xffffff + 1))
-                                    .setImage(result)
-                                    .setFooter("Won't send image/gif to chat in Aliucord server")
-                                    .build()
-                    )
-                    return@registerCommand CommandsAPI.CommandResult(null, embed, false)
-                } else {
-                    var send = ctx.getBoolOrDefault("send", false)
-                    if (send == false) {
-                        var embed = listOf(
-                                MessageEmbedBuilder()
-                                        .setColor(Random().nextInt(0xffffff + 1))
-                                        .setImage(result)
-                                        .build()
-                        )
-                        return@registerCommand CommandsAPI.CommandResult(null, embed, false)
-                    } else { return@registerCommand CommandsAPI.CommandResult(result, null, send) }
+                if (ctx.currentChannel.guildId == ALIUCORD_GUILD_ID && send) {
+                    val embeds = buildEmbeds(urls as MutableList<String>, "Won't send this in Aliucord server.")
+                    return@registerCommand CommandResult(null, embeds, false, "NekosLife")
                 }
-            } catch (throwable: Throwable) {
-                throwable.printStackTrace()
-                return@registerCommand CommandsAPI.CommandResult("Oops, an error occured.", null, false, "NekosLife")
+
+                else {
+                    if (send) {
+                        CommandResult(urls.joinToString("\n"), null, true)
+                    }
+                    else {
+                        val embeds = buildEmbeds(urls as MutableList<String>)
+                        CommandResult(null, embeds, false, "NekosLife")
+                    }
+                }
+            }
+            catch (t: Throwable) {
+                LOG.error(t)
+                CommandResult("Oops, an error occured. Check Debug Logs.",
+                        null, false, "NekosLife")
             }
         }
     }
