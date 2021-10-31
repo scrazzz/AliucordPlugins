@@ -1,8 +1,11 @@
-version = "1.2.1"
+version = "2.0.0"
 description = "Get images/gifs from nekos.life API"
 
 aliucord.changelog.set(
         """
+
+        # 2.0.0
+        * Added "limit" option. Now you can get up-to 10 images/gifs.
 
         # 1.2.1
         * Fixes "category" not showing up
