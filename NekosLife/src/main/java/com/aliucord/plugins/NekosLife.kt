@@ -29,7 +29,7 @@ private fun buildEmbeds(urls: MutableList<String>, text: String? = null): List<M
 
 private fun makeReq(chosen: String, count: Long): List<String> {
     val urls = mutableListOf<String>()
-    for (i in 0 until (count - 1)) {
+    for (i in 0 until count) {
         Thread.sleep(2_000)
         val result = Http.simpleJsonGet("https://nekos.life/api/v2/img/$chosen", Result::class.java)
         urls.add(result.url)
