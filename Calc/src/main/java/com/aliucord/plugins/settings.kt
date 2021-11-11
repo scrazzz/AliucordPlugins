@@ -30,8 +30,8 @@ class PluginSettings(private val settings: SettingsAPI) : SettingsPage() {
         setActionBarTitle("Calc - Wolfram API")
         val ctx = requireContext()
         val input = TextInput(ctx)
-        input.hint = "Enter APPID"
-        val editText = input.editText!!
+        input.setHint("Enter APPID")
+        val editText = input.editText
         val button = Button(ctx)
         button.text = "Save"
         button.setOnClickListener {
