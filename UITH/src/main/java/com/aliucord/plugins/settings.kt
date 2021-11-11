@@ -23,8 +23,7 @@ class PluginSettings(private val settings: SettingsAPI) : SettingsPage() {
         super.onViewBound(view)
         setActionBarTitle("UITH - sxcu subdomain settings")
         val ctx = requireContext()
-        val input = TextInput(ctx)
-        input.setHint("Enter PUBLIC sxcu subdomain")
+        val input = TextInput(ctx, "Enter PUBLIC sxcu subdomain")
         val editText = input.editText
         val button = Button(ctx)
         button.text = "Save"
