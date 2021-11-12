@@ -1,4 +1,4 @@
-package com.aliucord.plugins
+package com.scruzism.plugins
 
 import android.content.Context
 
