@@ -1,10 +1,4 @@
-/*
- * Copyright (c) 2021 scrazzz
- * Licensed under the MIT License
- */
-
-package com.aliucord.plugins
-
+package com.scruzism.plugins
 
 import android.view.View
 import android.text.Editable
@@ -27,31 +21,28 @@ class PluginSettings(private val settings: SettingsAPI) : SettingsPage() {
     @SuppressLint("SetTextI18n")
     override fun onViewBound(view: View?) {
         super.onViewBound(view)
-        setActionBarTitle("Calc - Wolfram API")
+        setActionBarTitle("UITH - sxcu subdomain settings")
         val ctx = requireContext()
-        val input = TextInput(ctx, "Enter APPID")
+        val input = TextInput(ctx, "Enter PUBLIC sxcu subdomain")
         val editText = input.editText
         val button = Button(ctx)
         button.text = "Save"
         button.setOnClickListener {
-            settings.setString("appid", editText.text.toString())
+            settings.setString("sxcuSubdomain", editText.text.toString())
             Utils.showToast("Saved.")
             close()
         }
         editText.maxLines = 1
-        editText.setText(settings.getString("appid", null))
+        editText.setText(settings.getString("sxcuSubdomain", null))
         editText.addTextChangedListener(object : TextWatcher() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable) {}
         })
-        val helpInfo = StringBuilder("\nGETTING AN APPID\n\n1) Sign up/ Log in:\n")
-                .append("- To use this plugin, you must register a Wolfram ID and sign in to the ")
-                .append("Wolfram|Alpha Developer Portal: https://developer.wolframalpha.com/portal\n")
-                .append("Upon logging in, go to the \"MY APPS\" tab to start creating your first app.\n\n")
-                .append("2) Obtaining an AppID:\n- Click the \"Sign up to get your first AppID\" button to start the app creation process. ")
-                .append("After a one-time survey about intended usage, the AppID creation dialog will appear. Give your application a name and simple description.\n\n")
-                .append("After you have done these steps, copy and paste the AppID in the above box.")
+        val helpInfo = StringBuilder("\n\n* Go to https://sxcu.net/domains and select a PUBLIC subdomain.\n\n")
+                .append("* Then paste the subdomain in the box (e.g: discord-cdn.is-terrible.com)\n\n")
+                .append("* Using a private domain won't work because it would need an API key and ")
+                .append("this plugin does not support that as of now.")
         val helpText = TextView(ctx)
         helpText.text = helpInfo.toString()
         helpText.linksClickable = true
