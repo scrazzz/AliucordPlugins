@@ -35,7 +35,7 @@ data class PageData(var media_id: Int, var images: Images) {
 // nhentai search
 data class SearchResult(val result: List<Result>) {
     data class Result(
-            val media_id: Int,
+            val id: Int,
             val title: com.scruzism.plugins.Result.Title,
             val upload_date: Int,
             val num_pages: Int,
