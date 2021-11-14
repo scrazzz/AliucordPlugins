@@ -79,7 +79,7 @@ private fun getSearch(q: String, sort: String): MutableList<MessageEmbed> {
     for (i in 0 until results.size) {
         val res = results[i]
         embed.addField("${i+1}. ${res.title.pretty}",
-                "ID: `${res.media_id}`\nPages: `${res.num_pages}`\nUploaded: `${res.upload_date.humanize()}`\nFavorites: `${res.num_favorites}`",
+                "ID: `${res.id}`\nPages: `${res.num_pages}`\nUploaded: `${res.upload_date.humanize()}`\nFavorites: `${res.num_favorites}`",
                 false)
     }
     embeds.add(embed.build())
@@ -148,7 +148,7 @@ class NHentai : Plugin() {
                 try {
                     val id = it.getSubCommandArgs("info")?.get("id").toString()
                     val embed = getComic(id)
-                    return@registerCommand CommandResult("ok", mutableListOf(embed), false, "NHentai", AVATAR)
+                    return@registerCommand CommandResult(null, mutableListOf(embed), false, "NHentai", AVATAR)
                 }
                 catch (t: Http.HttpException) {
                     LOG.error(t)
