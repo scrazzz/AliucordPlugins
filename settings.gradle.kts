@@ -17,3 +17,6 @@ project(":Ip").projectDir = File("./Ip")
 
 include(":UITH")
 project(":UITH").projectDir = File("./UITH")
+
+include(":NHentai")
+project(":NHentai").projectDir = File("./NHentai")
