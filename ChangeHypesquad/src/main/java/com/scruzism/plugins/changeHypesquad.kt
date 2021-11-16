@@ -4,10 +4,10 @@ import android.content.Context
 
 import com.aliucord.Http
 import com.aliucord.Logger
-import com.aliucord.Utils.GsonUtils
+import com.aliucord.utils.GsonUtils
 import com.aliucord.Utils.createCommandChoice
 import com.aliucord.Utils.createCommandOption
-import com.aliucord.api.CommandsAPI
+import com.aliucord.api.CommandsAPI.CommandResult
 import com.aliucord.entities.Plugin
 import com.aliucord.annotations.AliucordPlugin
 import com.discord.api.commands.ApplicationCommandType
