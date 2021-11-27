@@ -13,56 +13,84 @@ import com.aliucord.api.CommandsAPI.CommandResult
 import com.aliucord.entities.Plugin
 import com.aliucord.Http
 import com.aliucord.annotations.AliucordPlugin
+import com.aliucord.entities.MessageEmbedBuilder
 
 import com.discord.api.commands.ApplicationCommandType
-import java.io.IOException
+
+private fun makeReq(query: String): Result? {
+    val q = query.replace("\\s".toRegex(), "") // remove whitespaces
+
+    val url = Http.QueryBuilder("https://www.wolframalpha.com/input/apiExplorer.jsp")
+            .append("input", query).append("format", "plaintext").append("output", "JSON").append("type", "full")
+            .toString()
+    val resp = Http.Request(url, "GET")
+            .setHeader("Accept", "*/*")
+            .setHeader("Accept-Encoding", "gzip, deflate, br")
+            .setHeader("Accept-Language", "en-US,en;q=0.9")
+            .setHeader("Connection", "keep-alive")
+            .setHeader("Host", "www.wolframalpha.com")
+            .setHeader("Origin", "https://products.wolframalpha.com")
+            .setHeader("Referer", "https://products.wolframalpha.com/")
+            .setHeader("User-Agent", "Mozilla/5.0")
+            .execute().json(Result::class.java)
+    return resp
+}
 
 @AliucordPlugin
 class Calc : Plugin() {
 
     private val LOGGER = Logger("Calc")
-    init {
-        settingsTab = SettingsTab(PluginSettings::class.java).withArgs(settings)
-    }
 
     override fun start(ctx: Context) {
         val args = listOf(
                 Utils.createCommandOption(
                         ApplicationCommandType.STRING,
                         "input",
-                        "Input a question",
+                        "Type your question",
                         required = true),
                 Utils.createCommandOption(
                         ApplicationCommandType.BOOLEAN,
                         "send",
-                        "Send to chat",
-                        required = false)
+                        "Send to chat"),
+                Utils.createCommandOption(
+                        ApplicationCommandType.BOOLEAN,
+                        "output only",
+                        "Send response with output only")
         )
 
         commands.registerCommand(
                 "calc",
-                "Calculate your answer using wolfram API",
+                "Calculate your question using wolfram API",
                 args
         ) { ctx ->
             val input = ctx.getRequiredString("input")
             val send = ctx.getBoolOrDefault("send", false)
+            val isOutputOnly = ctx.getBoolOrDefault("output only", false)
 
-            val url = Http.QueryBuilder("https://api.wolframalpha.com/v1/result")
-                    .append("appid", settings.getString("appid", null))
-                    .append("i", input).toString()
-            val result = Http.Request(url).execute()
+            val http = try { makeReq(input) } catch (t: Throwable) {
+                LOGGER.error(t)
+                return@registerCommand CommandResult("an unknown error occured.", null, false)
+            }
 
-            try {
-                CommandResult(result.text(), null, send)
+            val userInput = http!!.queryresult.inputstring
+            val output = http.queryresult.pods[1].subpods[0].plaintext
+
+            if (!send) {
+                val embed = MessageEmbedBuilder()
+                        .setAuthor("Wolfram")
+                        .addField("Input", "`$userInput`", false)
+                        .addField("Output", "`$output`", false)
+                        .setRandomColor().build()
+                return@registerCommand CommandResult(null, mutableListOf(embed), false)
             }
-            catch (ex: IOException) {
-                if (ex is Http.HttpException) {
-                    LOGGER.error((ex))
-                    CommandResult(ex.message, null, false, "Calc")
-                }
-                LOGGER.error(ex)
-                CommandResult("An error occured. ```\n${ex.message}\n```", null, false, "Calc")
+
+            if (!isOutputOnly) {
+                val fmt = "Input: `$userInput`\n\nOutput: `$output`"
+                return@registerCommand CommandResult(fmt, null, send)
             }
+
+            CommandResult(output, null, send)
+
         }
     }
 
