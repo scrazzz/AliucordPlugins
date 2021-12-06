@@ -27,7 +27,7 @@ Calculate your question using Wolfram API.
 - [Help](https://github.com/scrazzz/AliucordPlugins/tree/main/Calc/README.md)
 - [Download](https://github.com/scrazzz/AliucordPlugins/blob/builds/Calc.zip?raw=true)
 
-## NHentai _⚠️ NSFW_
+## NHentai - _⚠️ NSFW_
 yes.
 - [Help](https://github.com/scrazzz/AliucordPlugins/tree/main/NHentai/README.md)
 - [Download](https://github.com/scrazzz/AliucordPlugins/blob/builds/NHentai.zip?raw=true)
