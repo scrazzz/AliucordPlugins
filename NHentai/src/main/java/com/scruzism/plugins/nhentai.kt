@@ -44,6 +44,7 @@ private fun getComic(id: String): MessageEmbed {
             .setTitle(result.title.pretty)
             .setImage("https://t.nhentai.net/galleries/${result.media_id}/cover.${ext(result.images.cover.t)}",
                     null, result.images.cover.h, result.images.cover.w)
+            .addField("ID", result.id.toString(), false)
             .addField("Number of Pages", result.num_pages.toString(), false)
             .addField("Number of Favorites", result.num_favorites.toString(), false)
             .addField("Uploaded at", result.upload_date.humanize(), false)
