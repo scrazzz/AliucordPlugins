@@ -2,6 +2,7 @@ package com.scruzism.plugins
 
 // nhentai info
 data class Result(
+        val id: Int,
         val media_id: Int,
         val title: Title,
         val images: Images,
