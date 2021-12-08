@@ -1,0 +1,32 @@
+{
+    "manifest": {
+        "author": "scruz#8815",
+        "name": "Monterey",
+        "version": "1.0.0"
+    },
+    "background": {
+        "url": "https:\/\/i.ibb.co\/bW6pKbS\/c54cba0e.jpg"
+    },
+    "fonts": {
+        "*": "https:\/\/cdn.discordapp.com\/attachments\/807838180949622836\/910816142602407946\/Product_Sans_Regular.ttf"
+    },
+    "simple_colors": {
+        "input_background": -863748700,
+        "background": 622726693,
+        "mention_highlight": 1921269156,
+        "background_secondary": 414023362
+    },
+    "colors": {
+        "link": -5407038,
+        "primary_630": 2115701283,
+        "notification_icon_bg_color": -8110684
+    },
+    "drawable_tints": {
+        "drawable_overlay_channels_selected_dark": -12123968,
+        "ic_spine_short_cap": -8110684,
+        "ic_spine_short_no_cap": -8110684,
+        "ic_spine_long_no_cap": -8110684,
+        "ic_spine_long_cap": -8110684
+    },
+    "raws": {}
+}
