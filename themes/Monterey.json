@@ -2,7 +2,9 @@
     "manifest": {
         "author": "scruz#8815",
         "name": "Monterey",
-        "version": "1.0.0"
+        "version": "1.6.9",
+        "license": "MIT",
+        "updater": "https:\/\/raw.githubusercontent.com\/scrazzz\/AliucordPlugins\/main\/themes\/Monterey.json"
     },
     "background": {
         "url": "https:\/\/i.ibb.co\/bW6pKbS\/c54cba0e.jpg"
