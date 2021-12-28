@@ -1,0 +1,32 @@
+{
+    "manifest": {
+        "author": "scruz#0004",
+        "license": "Unlicense",
+        "name": "smagenta",
+        "version": "0.2.0"
+    },
+    "background": {},
+    "fonts": {
+        "*": "https:\/\/cdn.discordapp.com\/attachments\/807838180949622836\/910816142602407946\/Product_Sans_Regular.ttf"
+    },
+    "simple_colors": {
+        "mention_highlight": 1440754283,
+        "accent": -3401129
+    },
+    "colors": {
+        "primary_dark_100": -1499549,
+        "primary_dark_400": -1499549,
+        "primary_dark_600": -15066598,
+        "primary_dark_630": -15066598,
+        "primary_dark_660": -15066598,
+        "primary_dark_700": -15066598,
+        "primary_dark_800": -15066598,
+        "uikit_btn_bg_color_selector_red": -4444635,
+        "uikit_settings_item_text_color_light": -2086293
+    },
+    "drawable_tints": {
+        "drawable_overlay_channels_selected_dark": 1474895459,
+        "drawable_voice_indicator_speaking": -2490290
+    },
+    "raws": {}
+}
