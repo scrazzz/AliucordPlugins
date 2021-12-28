@@ -19,7 +19,7 @@ class HouseData(
 @AliucordPlugin
 class ChangeHypesquad : Plugin() {
 
-    private val LOG = Logger("ChangeHypsquad")
+    private val LOG = Logger("ChangeHypesquad")
 
     override fun start(ctx: Context) {
         val args = listOf(
@@ -36,7 +36,7 @@ class ChangeHypesquad : Plugin() {
             )
         )
 
-        commands.registerCommand("ChangeHypsquad", "Change your Hypesquad House", args) {
+        commands.registerCommand("ChangeHypesquad", "Change your Hypesquad House", args) {
             val house = it.getRequiredString("house")
             val jsonPayload = GsonUtils.fromJson("{ house_id: ${house.toInt()} }", HouseData::class.java)
             try {
