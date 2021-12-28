@@ -3,7 +3,8 @@
         "author": "scruz#0004",
         "license": "Unlicense",
         "name": "smagenta",
-        "version": "0.2.0"
+        "version": "0.2.0",
+        "updater": "https:\/\/raw.githubusercontent.com\/scrazzz\/AliucordPlugins\/main\/themes\/smagenta.json"
     },
     "background": {},
     "fonts": {
