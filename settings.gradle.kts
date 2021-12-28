@@ -23,9 +23,3 @@ project(":NHentai").projectDir = File("./NHentai")
 
 include(":ChangeHypesquad")
 project(":ChangeHypesquad").projectDir = File("./ChangeHypesquad")
-
-//include(":UploadLargeFileToHost")
-//project(":UploadLargeFileToHost").projectDir = File("./UploadLargeFileToHost")
-
-include(":AliuBottom")
-project(":AliuBottom").projectDir = File("./AliuBottom")
