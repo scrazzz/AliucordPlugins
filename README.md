@@ -31,3 +31,8 @@ Calculate your question using Wolfram API.
 yes.
 - [Help](https://github.com/scrazzz/AliucordPlugins/tree/main/NHentai/README.md)
 - [Download](https://github.com/scrazzz/AliucordPlugins/blob/builds/NHentai.zip?raw=true)
+
+## ChangeHypesquad
+Change your hypesquad house using slash command.
+- Help
+- [Download](https://github.com/scrazzz/AliucordPlugins/blob/builds/ChangeHypesquad.zip?raw=true)
