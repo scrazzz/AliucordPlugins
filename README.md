@@ -34,5 +34,8 @@ yes.
 
 ## ChangeHypesquad
 Change your hypesquad house using slash command.
-- Help
 - [Download](https://github.com/scrazzz/AliucordPlugins/blob/builds/ChangeHypesquad.zip?raw=true)
+
+## Emotions
+Show emotions or something, idk i don't have emotions.
+- [Download](https://github.com/scrazzz/AliucordPlugins/blob/builds/Emotions.zip?raw=true)

@@ -23,3 +23,6 @@ project(":NHentai").projectDir = File("./NHentai")
 
 include(":ChangeHypesquad")
 project(":ChangeHypesquad").projectDir = File("./ChangeHypesquad")
+
+include(":Emotions")
+project(":Emotions").projectDir = File("./Emotions")
