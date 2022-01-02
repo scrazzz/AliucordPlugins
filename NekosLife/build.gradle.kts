@@ -1,8 +1,11 @@
-version = "2.1.0"
+version = "2.1.1"
 description = "Get images/gifs from nekos.life API"
 
 aliucord.changelog.set(
         """
+
+        # 2.1.1
+        * Default to 1 result instead of 2
 
         # 2.1.0
         * Fix limit option
