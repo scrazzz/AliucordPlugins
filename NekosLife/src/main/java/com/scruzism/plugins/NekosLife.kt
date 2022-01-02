@@ -133,7 +133,7 @@ class NekosLife : Plugin() {
         { ctx ->
             val chosen = ctx.getRequiredString("category")
             val send   = ctx.getBoolOrDefault("send", false)
-            val limit  = ctx.getLongOrDefault("limit", 2)
+            val limit  = ctx.getLongOrDefault("limit", 1)
             val urls   = makeReq(chosen, limit)
             try {
                 if (ctx.currentChannel.guildId == ALIUCORD_GUILD_ID && send) {
