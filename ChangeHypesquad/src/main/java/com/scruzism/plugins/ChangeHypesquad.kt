@@ -19,25 +19,38 @@ class HouseData(
 @AliucordPlugin
 class ChangeHypesquad : Plugin() {
 
-    private val LOG = Logger("ChangeHypesquad")
+    private val log = Logger("ChangeHypesquad")
 
     override fun start(ctx: Context) {
         val args = listOf(
-            createCommandOption(
-                ApplicationCommandType.STRING,
-                "house",
-                "Choose your new house",
-                choices = listOf(
-                    createCommandChoice("Bravery", "1"),
-                    createCommandChoice("Brilliance", "2"),
-                    createCommandChoice("Balance", "3"),
-                ),
-                required = true
-            )
+                createCommandOption(
+                        ApplicationCommandType.STRING,
+                        "house",
+                        "Choose your new house",
+                        choices = listOf(
+                                createCommandChoice("Bravery", "1"),
+                                createCommandChoice("Brilliance", "2"),
+                                createCommandChoice("Balance", "3"),
+                                createCommandChoice("Leave", "0")
+                        ),
+                        required = true
+                )
         )
 
         commands.registerCommand("ChangeHypesquad", "Change your Hypesquad House", args) {
             val house = it.getRequiredString("house")
+
+            if (house == "0") {
+                try {
+                    val resp = Http.Request.newDiscordRequest("/hypesquad/online", "DELETE").execute()
+                    return@registerCommand CommandResult(if (resp.ok()) {"You have left your house"} else "An error occurred", null, false)
+                }
+                catch (t: Throwable) {
+                    log.error(t)
+                    return@registerCommand CommandResult("An error occurred", null, false)
+                }
+            }
+
             val jsonPayload = GsonUtils.fromJson("{ house_id: ${house.toInt()} }", HouseData::class.java)
             try {
                 val resp = Http.Request.newDiscordRequest("/hypesquad/online", "POST").executeWithJson(jsonPayload)
@@ -45,7 +58,7 @@ class ChangeHypesquad : Plugin() {
                 CommandResult("Your house has ${ if (resp.ok()) "been" else "not" } changed.", null, false)
             }
             catch (t: Throwable) {
-                LOG.error(t)
+                log.error(t)
                 CommandResult("An error occurred.", null, false)
             }
         }
