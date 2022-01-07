@@ -15,14 +15,19 @@ project(":Calc").projectDir = File("./Calc")
 include(":Ip")
 project(":Ip").projectDir = File("./Ip")
 
-include(":UITH")
-project(":UITH").projectDir = File("./UITH")
-
 include(":NHentai")
 project(":NHentai").projectDir = File("./NHentai")
+
+// unreleased
+include(":UITH")
+project(":UITH").projectDir = File("./UITH")
 
 include(":ChangeHypesquad")
 project(":ChangeHypesquad").projectDir = File("./ChangeHypesquad")
 
 include(":Emotions")
 project(":Emotions").projectDir = File("./Emotions")
+
+// unreleased
+include(":Makesweet")
+project(":Makesweet").projectDir = File("./Makesweet")
