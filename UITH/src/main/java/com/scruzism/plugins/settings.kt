@@ -3,8 +3,9 @@ package com.scruzism.plugins
 import android.view.View
 import android.text.Editable
 import android.widget.TextView
-import android.text.util.Linkify
 import android.annotation.SuppressLint
+import android.text.Html
+import android.text.util.Linkify
 
 import com.aliucord.Utils
 import com.aliucord.views.Button
@@ -15,21 +16,12 @@ import com.aliucord.utils.DimenUtils
 import com.aliucord.views.Divider
 
 import com.lytefast.flexinput.R
-import com.discord.views.CheckedSetting
 import com.discord.utilities.color.ColorCompat
 import com.discord.utilities.view.text.TextWatcher
+import com.discord.views.CheckedSetting
+
 
 class PluginSettings(private val settings: SettingsAPI) : SettingsPage() {
-
-    fun createCheckedSetting(title: String, subtitle: String, setting: String, defValue: Boolean): CheckedSetting {
-        val ctx = requireContext()
-        return Utils.createCheckedSetting(ctx, CheckedSetting.ViewType.SWITCH, title, subtitle).apply {
-            isChecked = settings.getBool(setting, defValue)
-            setOnCheckedListener {
-                settings.setBool(setting, it)
-            }
-        }
-    }
 
     @SuppressLint("SetTextI18n")
     override fun onViewBound(view: View?) {
@@ -38,110 +30,105 @@ class PluginSettings(private val settings: SettingsAPI) : SettingsPage() {
         val ctx = requireContext()
         val p = DimenUtils.defaultPadding
 
+        val errorField = TextView(ctx).apply {
+            setTextColor(ColorCompat.getThemedColor(ctx, R.b.colorError))
+            setPadding(p, p, p, p)
+        }
+
+        // HEADER
+        TextView(ctx, null, 0, R.i.UiKit_Settings_Item_Header).apply {
+            text = "Regex Settings"
+            addView(this)
+        }
+
+        // TEXT
         TextView(ctx).apply {
-            text = "• Enter a default host to upload the attachment."
+            text = "Enter the regex pattern of the URL to receive"
             setTextColor(ColorCompat.getThemedColor(ctx, R.b.colorOnPrimary))
             setPadding(p, p, p, p)
             addView(this)
         }
-        val defaultHostInput = TextInput(ctx, "Enter default host")
-        val et = defaultHostInput.editText
-        et.maxLines = 1
-        et.setText(settings.getString("defaultHost", "imgbb"))
-        //
-        val defButton = Button(ctx).apply {
-            text = "Save"
-            setOnClickListener {
-                settings.setString("defaultHost", et.text.toString().lowercase())
-                Utils.showToast("Default host saved.")
-            }
-        }
-        //
-        et.addTextChangedListener(object : TextWatcher() {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable) {
-                if (!defaultHosts.containsValue(s.toString().lowercase())) {
-                    defButton.alpha = 0.5f
-                    defButton.isClickable = false
-                }
-                else {
-                    defButton.alpha = 1f
-                    defButton.isClickable = true
-                }
-            }
-        })
 
-        val defaultHostHelp = StringBuilder("Supported hosts:\n\n- imgbb\n- 0x0.st\n- sxcu")
-        val defaultHostHelpText = TextView(ctx).apply {
-            text = defaultHostHelp.toString()
-            setTextColor(ColorCompat.getThemedColor(ctx, R.b.colorOnPrimary))
-            setPadding(p, p, p, p)
-        }
-
-        addView(defaultHostInput)
-        addView(defButton)
-        addView(defaultHostHelpText)
-        addView(Divider(ctx))
-
-
-        /* SXCU Setting */
-        val sxcuInfo = TextView(ctx).apply {
-            text = "• Enter a sxcu sub domain to upload the attachment.\n• Only applicable if default host is set as \"sxcu\"."
-            setTextColor(ColorCompat.getThemedColor(ctx, R.b.colorOnPrimary))
-            setPadding(p, p, p, p)
-        }
-
-        val input = TextInput(ctx, "Enter PUBLIC sxcu subdomain")
-
-        val button = Button(ctx).apply {
-            text = "Save"
-            setOnClickListener {
-                settings.setString("sxcuSubdomain", input.editText.text.toString())
-                Utils.showToast("Saved.")
-            }
-        }
-
+        // INPUT BOX
+        val input = TextInput(ctx, "Regex")
         input.apply {
-            editText.maxLines = 1
-            editText.setText(settings.getString("sxcuSubdomain", null))
+            editText.setText(settings.getString("regex", null))
             editText.addTextChangedListener(object : TextWatcher() {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-                override fun afterTextChanged(s: Editable) {
-                    if (s.isEmpty()) {
-                        button.alpha = 0.5f
-                        button.isClickable = false
-                    }
-                    else {
-                        button.alpha = 1f
-                        button.isClickable = true
-                    }
-                }
+                override fun afterTextChanged(s: Editable) {}
             })
         }
 
-        val helpText = TextView(ctx).apply {
-            text = StringBuilder("* Go to https://sxcu.net/domains and select a PUBLIC subdomain.\n")
-                    .append("* Then paste the subdomain in the box (e.g: discord-cdn.is-terrible.com)").toString()
-            linksClickable = true
-            setTextColor(ColorCompat.getThemedColor(ctx, R.b.colorOnPrimary))
-            Linkify.addLinks(this, Linkify.WEB_URLS)
+        // SAVE BUTTON
+        val button = Button(ctx).apply {
+            text = "Save"
+            setOnClickListener {
+                settings.setString("regex", input.editText.text.toString().toRegex().toString())
+                Utils.showToast("Saved")
+            }
+        }
+
+        // DIV
+        val divider = Divider(ctx).apply {
             setPadding(p, p, p, p)
         }
 
-        addView(sxcuInfo)
+        // ADV SETTINGS HEADER
+        val advHeader = TextView(ctx, null, 0, R.i.UiKit_Settings_Item_Header).apply {
+            text = "Advanced Settings"
+        }
+
+        // CHECKED SETTINGS
+        val uploadAllAttachments = Utils.createCheckedSetting(
+                ctx, CheckedSetting.ViewType.CHECK,
+                "Upload all attachment types", "Try to upload all attachment types instead of just images.\n(Warning: Might error)"
+        ).apply {
+            isChecked = settings.getBool("uploadAllAttachments", false)
+            setOnCheckedListener {
+                settings.setBool("uploadAllAttachments", it)
+            }
+        }
+        val switchOffPlugin = Utils.createCheckedSetting(
+                ctx, CheckedSetting.ViewType.CHECK,
+                "Switch off UITH", "Switch off this plugin to send attachments normally."
+        ).apply {
+            isChecked = settings.getBool("pluginOff", false)
+            setOnCheckedListener {
+                settings.setBool("pluginOff", it)
+            }
+        }
+
+        // 2nd DIV
+        val secondDivider = Divider(ctx).apply {
+            setPadding(p, p, p, p)
+        }
+
+        // LINKS HEADER
+        val linksHeader = TextView(ctx, null, 0, R.i.UiKit_Settings_Item_Header).apply {
+            text = "Links"
+        }
+
+        // HELP/INFO
+        val helpInfo = TextView(ctx).apply {
+            linksClickable = true
+            text = "- Support Server: https://discord.gg/tdjBfsvhHT\n- UITH README: https://git.io/JSyri"
+            setTextColor(ColorCompat.getThemedColor(ctx, R.b.colorOnPrimary))
+        }
+        Linkify.addLinks(helpInfo, Linkify.WEB_URLS)
+
         addView(input)
         addView(button)
-        addView(helpText)
+        addView(errorField)
 
-        addView(Divider(ctx))
+        addView(divider)
 
-        /* Send by default setting */
-        val defaultSend = createCheckedSetting(
-                "Send", "Send the attachment to chat by default",
-                "defaultSend", false)
-        addView(defaultSend)
+        addView(advHeader)
+        addView(uploadAllAttachments)
+        addView(switchOffPlugin)
+
+        addView(secondDivider)
+        addView(linksHeader)
+        addView(helpInfo)
     }
-
 }
