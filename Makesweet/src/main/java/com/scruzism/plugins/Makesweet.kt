@@ -17,7 +17,7 @@ import java.net.URLEncoder
 
 private fun buildReq(path: String, method: String = "POST"): Http.Request{
     val base = "https://api.makesweet.com/make"
-    return Http.Request(base + path, method).setHeader("Authorization", "scruz1smAhh3koh6")
+    return Http.Request(base + path, method).setHeader("Authorization", "invalid")
 }
 
 private fun makeTempFile(response: Http.Response, mContext: Context): File {
