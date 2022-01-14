@@ -15,7 +15,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.net.URLEncoder
 
-private fun buildReq(path: String, method: String = "GET"): Http.Request{
+private fun buildReq(path: String, method: String = "POST"): Http.Request{
     val base = "https://mkswt-api-aliucord.herokuapp.com"
     return Http.Request(base + path, method)
 }
