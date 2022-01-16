@@ -1,4 +1,2 @@
-version = "0.2.0"
+version = "1.0.0"
 description = "makesweet api"
-
-aliucord.excludeFromUpdaterJson.set(true)
