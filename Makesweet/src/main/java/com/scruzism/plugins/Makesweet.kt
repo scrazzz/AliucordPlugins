@@ -79,7 +79,7 @@ class Makesweet : Plugin() {
                     log.error(t)
                     return@registerCommand CommandsAPI.CommandResult("You have not provided an attachment or an error occurred", null, false)
                 }
-                val resp = buildReq("/image").executeWithMultipartForm(mapOf("images[]" to image))
+                val resp = buildReq("/image").executeWithMultipartForm(mapOf("file" to image))
                 val file = makeTempFile(resp, ctx)
                 it.attachments.clear()
                 it.addAttachment(Uri.fromFile(file).toString(), "makesweet.gif")
@@ -91,7 +91,7 @@ class Makesweet : Plugin() {
                     log.error(t)
                     return@registerCommand CommandsAPI.CommandResult("You have not provided an attachment or an error occurred", null, false)
                 }
-                val resp = buildReq("/image?text=${URLEncoder.encode(text, "UTF-8")}").executeWithMultipartForm(mapOf("images[]" to image))
+                val resp = buildReq("/image?text=${URLEncoder.encode(text, "UTF-8")}").executeWithMultipartForm(mapOf("file" to image))
                 val file = makeTempFile(resp, ctx)
                 it.attachments.clear()
                 it.addAttachment(Uri.fromFile(file).toString(), "makesweet.gif")
