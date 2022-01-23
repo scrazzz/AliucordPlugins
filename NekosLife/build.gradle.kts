@@ -1,19 +1,11 @@
-<<<<<<< HEAD
-version = "2.1.1"
-=======
 version = "2.1.2"
->>>>>>> 4fcd64ffebd5d45510fc0a7f42b35e141cb0222f
 description = "Get images/gifs from nekos.life API"
 
 aliucord.changelog.set(
         """
+	    # 2.1.2
+	    * Fixed 2 options being incorrect
 
-<<<<<<< HEAD
-=======
-	# 2.1.2
-	* Fixed 2 options being incorrect
-
->>>>>>> 4fcd64ffebd5d45510fc0a7f42b35e141cb0222f
         # 2.1.1
         * Default to 1 result instead of 2
 
