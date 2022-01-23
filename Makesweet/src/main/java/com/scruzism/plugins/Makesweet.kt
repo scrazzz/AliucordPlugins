@@ -15,14 +15,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.net.URLEncoder
 
-<<<<<<< HEAD
-private fun buildReq(path: String, method: String = "GET"): Http.Request{
-    //val base = "https://api.makesweet.com/make"
-    val base = "https://mkswt-api-aliucord.herokuapp.com/mkswt"
-=======
 private fun buildReq(path: String, method: String = "POST"): Http.Request{
     val base = "https://mkswt.herokuapp.com"
->>>>>>> 4fcd64ffebd5d45510fc0a7f42b35e141cb0222f
     return Http.Request(base + path, method)
 }
 
@@ -75,38 +69,12 @@ class Makesweet : Plugin() {
         commands.registerCommand("makesweet", "makesweet API", args) {
             if (it.containsArg("text")) {
                 val text = it.getSubCommandArgs("text")?.get("text").toString()
-<<<<<<< HEAD
-                val resp = buildReq("?text=${URLEncoder.encode(text, "UTF-8")}").execute()
-=======
                 val resp = buildReq("/text?text=${URLEncoder.encode(text, "UTF-8")}").execute()
->>>>>>> 4fcd64ffebd5d45510fc0a7f42b35e141cb0222f
                 val file = makeTempFile(resp, ctx)
                 it.addAttachment(Uri.fromFile(file).toString(), "makesweet.gif")
             }
 
             if (it.containsArg("image")) {
-<<<<<<< HEAD
-//                val image = try { File(it.attachments[0].data.toString()) } catch (t: Throwable) {
-//                    log.error(t)
-//                    return@registerCommand CommandsAPI.CommandResult("You have not provided an attachment or an error occurred", null, false)
-//                }
-//                val resp = buildReq("/heart-locket").executeWithMultipartForm(mapOf("images[]" to image))
-//                val file = makeTempFile(resp, ctx)
-//                it.attachments.clear()
-//                it.addAttachment(Uri.fromFile(file).toString(), "makesweet.gif")
-            }
-
-            if (it.containsArg("textAndImage")) {
-//                val text = it.getSubCommandArgs("textAndImage")?.get("text").toString()
-//                val image = try { File(it.attachments[0].data.toString()) } catch (t: Throwable) {
-//                    log.error(t)
-//                    return@registerCommand CommandsAPI.CommandResult("You have not provided an attachment or an error occurred", null, false)
-//                }
-//                val resp = buildReq("/heart-locket?text=${URLEncoder.encode(text, "UTF-8")}").executeWithMultipartForm(mapOf("images[]" to image))
-//                val file = makeTempFile(resp, ctx)
-//                it.attachments.clear()
-//                it.addAttachment(Uri.fromFile(file).toString(), "makesweet.gif")
-=======
                 val image = try { File(it.attachments[0].data.toString()) } catch (t: Throwable) {
                     log.error(t)
                     return@registerCommand CommandsAPI.CommandResult("You have not provided an attachment or an error occurred", null, false)
@@ -127,7 +95,6 @@ class Makesweet : Plugin() {
                 val file = makeTempFile(resp, ctx)
                 it.attachments.clear()
                 it.addAttachment(Uri.fromFile(file).toString(), "makesweet.gif")
->>>>>>> 4fcd64ffebd5d45510fc0a7f42b35e141cb0222f
             }
 
             CommandsAPI.CommandResult("")

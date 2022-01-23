@@ -61,11 +61,7 @@ class NekosLife : Plugin() {
                 createCommandChoice("ero yuri", "eroyuri"),
                 createCommandChoice("femdom", "femdom"),
                 createCommandChoice("feet", "feet"),
-<<<<<<< HEAD
-                createCommandChoice("feet gif", "feetgif"),
-=======
                 createCommandChoice("feet gif", "feetg"),
->>>>>>> 4fcd64ffebd5d45510fc0a7f42b35e141cb0222f
                 createCommandChoice("fox girl", "fox_girl"),
                 createCommandChoice("futanari", "futanari"),
                 createCommandChoice("gasm", "gasm"),
@@ -87,11 +83,7 @@ class NekosLife : Plugin() {
                 createCommandChoice("nsfw avatar", "nsfw_avatar"),
                 createCommandChoice("pussy", "pussy"),
                 createCommandChoice("pussy jpg", "pussy_jpg"),
-<<<<<<< HEAD
-                createCommandChoice("pwank", "pwank"),
-=======
                 createCommandChoice("pwank", "pwankg"),
->>>>>>> 4fcd64ffebd5d45510fc0a7f42b35e141cb0222f
                 createCommandChoice("random hentai gif", "Random_hentai_gif"),
                 createCommandChoice("small boobs", "smallboobs"),
                 createCommandChoice("smug", "smug"),
