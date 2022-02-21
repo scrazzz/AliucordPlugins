@@ -28,6 +28,9 @@ project(":ChangeHypesquad").projectDir = File("./ChangeHypesquad")
 include(":Emotions")
 project(":Emotions").projectDir = File("./Emotions")
 
-// unreleased
 include(":Makesweet")
 project(":Makesweet").projectDir = File("./Makesweet")
+
+include(":ScreenshotAPI")
+project(":ScreenshotAPI").projectDir = File("./ScreenshotAPI")
+
