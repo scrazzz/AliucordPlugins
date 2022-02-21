@@ -12,9 +12,9 @@ import com.discord.api.commands.ApplicationCommandType
 
 import java.net.URLEncoder
 
-data class APIResponse {
+data class APIResponse(
 	val screenshot: String
-}
+)
 
 
 @AliucordPlugin
