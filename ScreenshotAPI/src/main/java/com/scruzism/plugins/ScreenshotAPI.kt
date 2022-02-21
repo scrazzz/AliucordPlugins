@@ -41,9 +41,9 @@ class ScreenshotAPI : Plugin() {
             val url = URLEncoder.encode(it.getRequiredString("url"))
             val shouldSend = it.getBoolOrDefault("send", false)
             try {
-                val httpUrl = StringBuilder("https://shot.screenshotapi.net/screenshot")
+                val httpUrl = StringBuilder("https://shot.screenshotapi.net/screenshot?token=8YB357P-BNR4620-M3JRHZ7-7DJRFJJ")
 				    .append("&url=$url&output=json&file_type=png&block_ads=true&wait_for_event=load&ttl=15").toString()
-				log.debug(url)
+		log.debug(url)
                 val result = Http.Request(httpUrl, "GET").execute().json(APIResponse::class.java).screenshot
 
                 CommandsAPI.CommandResult(result, null, shouldSend, "ScreenshotAPI")
