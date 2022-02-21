@@ -52,7 +52,7 @@ class ScreenshotAPI : Plugin() {
 				if (!shouldSend)
 				{
 					val embed = MessageEmbedBuilder().setRandomColor().setImage(result, null, 876, 1680).build()
-					return@registerCommand CommandsAPI.CommandResult(null, embed, false, "ScreenshotAPI")
+					return@registerCommand CommandsAPI.CommandResult(null, mutableListOf(embed), false, "ScreenshotAPI")
 				}
 
                 CommandsAPI.CommandResult(result, null, shouldSend, "ScreenshotAPI")
