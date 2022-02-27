@@ -34,3 +34,5 @@ project(":Makesweet").projectDir = File("./Makesweet")
 include(":ScreenshotAPI")
 project(":ScreenshotAPI").projectDir = File("./ScreenshotAPI")
 
+include(":WhichMessage")
+project(":WhichMessage").projectDir = File("./WhichMessage")
