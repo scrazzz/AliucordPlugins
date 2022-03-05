@@ -18,7 +18,6 @@ project(":Ip").projectDir = File("./Ip")
 include(":NHentai")
 project(":NHentai").projectDir = File("./NHentai")
 
-// unreleased
 include(":UITH")
 project(":UITH").projectDir = File("./UITH")
 

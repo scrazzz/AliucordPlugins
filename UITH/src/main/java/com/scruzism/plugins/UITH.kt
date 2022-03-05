@@ -33,26 +33,27 @@ private fun newUpload(file: File, data: Config, log: Logger): String {
     val lock = Object()
     val result = StringBuilder()
 
-    // thanks link
+    // thanks Link
     synchronized(lock) {
         Utils.threadPool.execute {
             try {
                 val params = mutableMapOf<String, Any>()
                 val resp = Http.Request("${data.RequestURL}", "POST")
-                if (data.Headers != null) {
+
+                if (data.Headers != null)
+                {
                     for ((k, v) in data.Headers!!.entries) {
                         resp.setHeader(k, v)
                     }
                 }
 
-                if (data.Arguments != null) {
+                if (data.Arguments != null)
+                {
                     for ((k, v) in data.Arguments!!.entries) {
                         params[k] = v
                     }
                 }
-
                 params["${data.FileFormName}"] = file
-
                 result.append(resp.executeWithMultipartForm(params).text())
             }
             catch (ex: Throwable) {
@@ -76,14 +77,19 @@ private fun newUpload(file: File, data: Config, log: Logger): String {
 @AliucordPlugin
 class UITH : Plugin() {
 
-    private val LOG = Logger("UITH")
-    // https://github.com/TymanWasTaken/aliucord-plugins/blob/main/EncryptDMs/src/main/kotlin/tech/tyman/plugins/encryptdms/EncryptDMs.kt#L321-L326
-    private val textContentField = MessageContent::class.java.getDeclaredField("textContent").apply { isAccessible = true }
-    private fun MessageContent.set(text: String) = textContentField.set(this, text)
-
     init {
         settingsTab = SettingsTab(PluginSettings::class.java).withArgs(settings)
     }
+
+    private val LOG = Logger("UITH")
+
+    // source: https://github.com/TymanWasTaken/aliucord-plugins/blob/main/EncryptDMs/src/main/kotlin/tech/tyman/plugins/encryptdms/EncryptDMs.kt#L321-L326
+    private val textContentField = MessageContent::class.java.getDeclaredField("textContent").apply { isAccessible = true }
+    private fun MessageContent.set(text: String) = textContentField.set(this, text)
+
+    // compile regex before uploading to speed up process
+    private val defaultRegex = settings.setString("regex", "https:\\/\\/[\\w./-]*")
+    private val re = settings.getString("regex", null).toRegex().toString()
 
     override fun start(ctx: Context) {
 
@@ -103,7 +109,7 @@ class UITH : Plugin() {
                         ApplicationCommandType.SUBCOMMAND, "current", "View current UITH settings"
                 ),
                 Utils.createCommandOption(
-                        ApplicationCommandType.SUBCOMMAND, "disable", "Switch off plugin",
+                        ApplicationCommandType.SUBCOMMAND, "disable", "Disable plugin",
                         subCommandOptions = listOf(
                                 Utils.createCommandOption(
                                         ApplicationCommandType.BOOLEAN,
@@ -129,6 +135,7 @@ class UITH : Plugin() {
                 }
                 LOG.debug(config.toString())
                 settings.setString("sxcuConfig", it.getSubCommandArgs("add")?.get("sharex").toString())
+
                 return@registerCommand CommandResult("Set data successfully", null, false)
             }
 
@@ -172,20 +179,22 @@ class UITH : Plugin() {
             val attachments = (it.args[3] as List<Attachment<*>>).toMutableList()
             val firstAttachment = try { attachments[0] } catch (t: IndexOutOfBoundsException) { return@before }
 
-            // Check if plugin is OFF
-            if (settings.getBool("pluginOff", false)) {
+            // Check if regex is set
+            if (re.isNullOrEmpty()) {
+                LOG.info("regex is null or empty in UITH.json settings. Skipping upload...")
                 return@before
             }
 
+            // Check if plugin is OFF
+            if (settings.getBool("pluginOff", false)) { return@before }
+
             // Check if multiple attachments provided
-            if (!settings.getBool("pluginOff", false) == true) {
-                if (attachments.size > 1) {
-                    Utils.showToast("UITH: Multiple attachment uploads are not supported!", true)
-                    return@before
-                }
+            if (attachments.size > 1) {
+                Utils.showToast("UITH: Multiple attachment uploads are not supported!", true)
+                return@before
             }
 
-            // Check file type and don't upload to host if `uploadAllAttachments` is false
+            // Check file type and don't upload if `uploadAllAttachments` is false
             // (There might be a better way to do this lol)
             val mime = MimeTypeMap.getSingleton().getExtensionFromMimeType(context.getContentResolver().getType(firstAttachment.uri)) as String
             if (mime !in arrayOf("png", "jpg", "jpeg", "webp")) {
@@ -199,14 +208,6 @@ class UITH : Plugin() {
             if (sxcuConfig == null) {
                 LOG.debug("sxcuConfig not provided, skipping upload...")
                 return@before
-            }
-            // Upload to host
-            // but check if regex is set first before uploading
-            val re = if (settings.getString("regex", null).isNullOrEmpty()) {
-                LOG.debug("regex not set, skipping upload...")
-                return@before
-            } else {
-                settings.getString("regex", null).toRegex().toString()
             }
             val configData = GsonUtils.fromJson(sxcuConfig, Config::class.java)
             //val file = toLocalAttachment(attachments[0])

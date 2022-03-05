@@ -4,7 +4,6 @@ import android.view.View
 import android.text.Editable
 import android.widget.TextView
 import android.annotation.SuppressLint
-import android.text.Html
 import android.text.util.Linkify
 
 import com.aliucord.Utils
@@ -70,14 +69,10 @@ class PluginSettings(private val settings: SettingsAPI) : SettingsPage() {
         }
 
         // DIV
-        val divider = Divider(ctx).apply {
-            setPadding(p, p, p, p)
-        }
+        val divider = Divider(ctx).apply { setPadding(p, p, p, p) }
 
-        // ADV SETTINGS HEADER
-        val advHeader = TextView(ctx, null, 0, R.i.UiKit_Settings_Item_Header).apply {
-            text = "Advanced Settings"
-        }
+        // ADVANCED SETTINGS HEADER
+        val advHeader = TextView(ctx, null, 0, R.i.UiKit_Settings_Item_Header).apply { text = "Advanced Settings" }
 
         // CHECKED SETTINGS
         val uploadAllAttachments = Utils.createCheckedSetting(
@@ -91,7 +86,7 @@ class PluginSettings(private val settings: SettingsAPI) : SettingsPage() {
         }
         val switchOffPlugin = Utils.createCheckedSetting(
                 ctx, CheckedSetting.ViewType.CHECK,
-                "Switch off UITH", "Switch off this plugin to send attachments normally."
+                "Disable UITH", "Disable this plugin to send attachments normally.\nSlash command available: \"/uith disable\""
         ).apply {
             isChecked = settings.getBool("pluginOff", false)
             setOnCheckedListener {
@@ -100,14 +95,10 @@ class PluginSettings(private val settings: SettingsAPI) : SettingsPage() {
         }
 
         // 2nd DIV
-        val secondDivider = Divider(ctx).apply {
-            setPadding(p, p, p, p)
-        }
+        val secondDivider = Divider(ctx).apply { setPadding(p, p, p, p) }
 
         // LINKS HEADER
-        val linksHeader = TextView(ctx, null, 0, R.i.UiKit_Settings_Item_Header).apply {
-            text = "Links"
-        }
+        val linksHeader = TextView(ctx, null, 0, R.i.UiKit_Settings_Item_Header).apply { text = "Links" }
 
         // HELP/INFO
         val helpInfo = TextView(ctx).apply {
