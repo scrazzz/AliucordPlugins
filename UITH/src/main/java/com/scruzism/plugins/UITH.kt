@@ -21,6 +21,7 @@ import com.lytefast.flexinput.model.Attachment
 //import com.discord.utilities.attachments.AttachmentUtilsKt.toAttachment
 
 import com.google.gson.JsonSyntaxException
+import org.json.JSONException
 import org.json.JSONObject
 
 import java.io.File
@@ -70,7 +71,11 @@ private fun newUpload(file: File, data: Config, log: Logger): String {
         }
         lock.wait(9_000)
     }
-    log.debug(JSONObject(result.toString()).toString(4))
+    try {
+        log.debug(JSONObject(result.toString()).toString(4))
+    } catch (e: JSONException) {
+        log.debug(result.toString())
+    }
     return result.toString()
 }
 
@@ -88,8 +93,12 @@ class UITH : Plugin() {
     private fun MessageContent.set(text: String) = textContentField.set(this, text)
 
     // compile regex before uploading to speed up process
-    private val defaultRegex = settings.setString("regex", "https:\\/\\/[\\w./-]*")
-    private val re = settings.getString("regex", null).toRegex().toString()
+    private var re = try {
+        settings.getString("regex", "https:\\/\\/[\\w./-]*").toRegex().toString()
+    } catch (e: Throwable) {
+        LOG.error(e)
+    }
+    private val pattern = Pattern.compile(re.toString())
 
     override fun start(ctx: Context) {
 
@@ -179,12 +188,6 @@ class UITH : Plugin() {
             val attachments = (it.args[3] as List<Attachment<*>>).toMutableList()
             val firstAttachment = try { attachments[0] } catch (t: IndexOutOfBoundsException) { return@before }
 
-            // Check if regex is set
-            if (re.isNullOrEmpty()) {
-                LOG.info("regex is null or empty in UITH.json settings. Skipping upload...")
-                return@before
-            }
-
             // Check if plugin is OFF
             if (settings.getBool("pluginOff", false)) { return@before }
 
@@ -215,7 +218,7 @@ class UITH : Plugin() {
 
             // match URL from regex
             val url = try {
-                val matcher = Pattern.compile(re).matcher(json)
+                val matcher = pattern.matcher(json)
                 matcher.find()
                 matcher.group()
             } catch (ex: Throwable) {
