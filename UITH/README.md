@@ -1,5 +1,7 @@
 # Upload Image To Host (UITH)
 
+**If you have installed this plugin during its development, you may need to delete UITH.json file in /Aliucord/settings folder in order for the new version to work properly.**
+
 ## Setting up
 If you don't know what sharex is then this plugin isn't for you. Please don't ask how to get a .sxcu file. I assume you know what it is and where to get it from, so let me explain how to use this plugin.
 
