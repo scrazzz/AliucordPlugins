@@ -72,9 +72,10 @@ private fun newUpload(file: File, data: Config, log: Logger): String {
         lock.wait(9_000)
     }
     try {
-        log.debug(JSONObject(result.toString()).toString(4))
+        log.debug("JSON FORMATTED:\n${JSONObject(result.toString()).toString(4)}")
+        log.debug("API RAW RESPONSE:\n${result.toString()}")
     } catch (e: JSONException) {
-        log.debug(result.toString())
+        log.debug("API RESPONSE:\n${result.toString()}")
     }
     return result.toString()
 }
