@@ -42,15 +42,29 @@ class Makesweet : Plugin() {
                         subCommandOptions = listOf(
                                 Utils.createCommandOption(
                                         ApplicationCommandType.STRING,
-                                        "text",
-                                        "Enter text",
+                                        "leftText",
+                                        "Enter text for left side of locket",
                                         required = true
+                                ),
+                                Utils.createCommandOption(
+                                        ApplicationCommandType.STRING,
+                                        "rightText",
+                                        "Enter text for right side of locket",
+                                        required = false
                                 )
                         )
                 ),
                 Utils.createCommandOption(
                         ApplicationCommandType.SUBCOMMAND,
-                        "image"
+                        "image",
+                        subCommandOptions = listOf(
+                                Utils.createCommandOption(
+                                        ApplicationCommandType.STRING,
+                                        "imageUrl",
+                                        "Enter the image URL",
+                                        required = true
+                                )
+                        )
                 ),
                 Utils.createCommandOption(
                         ApplicationCommandType.SUBCOMMAND,
@@ -59,7 +73,13 @@ class Makesweet : Plugin() {
                                 Utils.createCommandOption(
                                         ApplicationCommandType.STRING,
                                         "text",
-                                        "Add text and pick an image",
+                                        "Add a text",
+                                        required = true
+                                ),
+                                Utils.createCommandOption(
+                                        ApplicationCommandType.STRING,
+                                        "imageUrl",
+                                        "Enter an image URL",
                                         required = true
                                 )
                         )
@@ -68,30 +88,32 @@ class Makesweet : Plugin() {
 
         commands.registerCommand("makesweet", "makesweet API", args) {
             if (it.containsArg("text")) {
-                val text = it.getSubCommandArgs("text")?.get("text").toString()
-                val resp = buildReq("/text?text=${URLEncoder.encode(text, "UTF-8")}").execute()
+                val leftText = URLEncoder.encode(it.getSubCommandArgs("text")?.get("leftText").toString(), "UTF-8")
+                val rawRightText = it.getSubCommandArgs("text")?.get("rightText").toString()
+                val rightText = URLEncoder.encode("&text=$rawRightText", "UTF-8") // I know, it's weird
+
+                val url = StringBuilder("/text?text=$leftText")
+                if (rawRightText != "null") { url.append(rightText) }
+                val resp = buildReq(url.toString()).execute()
                 val file = makeTempFile(resp, ctx)
                 it.addAttachment(Uri.fromFile(file).toString(), "makesweet.gif")
             }
 
             if (it.containsArg("image")) {
-                val image = try { File(it.attachments[0].data.toString()) } catch (t: Throwable) {
-                    log.error(t)
-                    return@registerCommand CommandsAPI.CommandResult("You have not provided an attachment or an error occurred", null, false)
-                }
+                val imageUrl = it.getSubCommandArgs("image")?.get("imageUrl").toString()
+                val imageResp = Http.Request(imageUrl).execute()
+                val image = makeTempFile(imageResp, ctx)
                 val resp = buildReq("/image").executeWithMultipartForm(mapOf("file" to image))
                 val file = makeTempFile(resp, ctx)
-                it.attachments.clear()
                 it.addAttachment(Uri.fromFile(file).toString(), "makesweet.gif")
             }
 
             if (it.containsArg("textAndImage")) {
-                val text = it.getSubCommandArgs("textAndImage")?.get("text").toString()
-                val image = try { File(it.attachments[0].data.toString()) } catch (t: Throwable) {
-                    log.error(t)
-                    return@registerCommand CommandsAPI.CommandResult("You have not provided an attachment or an error occurred", null, false)
-                }
-                val resp = buildReq("/image?text=${URLEncoder.encode(text, "UTF-8")}").executeWithMultipartForm(mapOf("file" to image))
+                val text = URLEncoder.encode(it.getSubCommandArgs("textAndImage")?.get("text").toString(), "UTF-8")
+                val imageUrl = it.getSubCommandArgs("textAndImage")?.get("imageUrl").toString()
+                val imageResp = Http.Request(imageUrl).execute()
+                val image = makeTempFile(imageResp, ctx)
+                val resp = buildReq("/image?text=${text}").executeWithMultipartForm(mapOf("file" to image))
                 val file = makeTempFile(resp, ctx)
                 it.attachments.clear()
                 it.addAttachment(Uri.fromFile(file).toString(), "makesweet.gif")
