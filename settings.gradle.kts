@@ -9,8 +9,8 @@ project(":Capitalize").projectDir = File("./Capitalize")
 include(":NekosLife")
 project(":NekosLife").projectDir = File("./NekosLife")
 
-include(":Calc")
-project(":Calc").projectDir = File("./Calc")
+include(":Wolfram")
+project(":Wolfram").projectDir = File("./Wolfram")
 
 include(":Ip")
 project(":Ip").projectDir = File("./Ip")
