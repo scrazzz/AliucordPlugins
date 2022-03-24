@@ -17,11 +17,11 @@ import com.aliucord.entities.MessageEmbedBuilder
 
 import com.discord.api.commands.ApplicationCommandType
 
-private fun makeReq(query: String): Result? {
-    val q = query.replace("\\s".toRegex(), "") // remove whitespaces
 
+private fun makeReq(query: String): Result {
+    val q = query.replace("\\s".toRegex(), " ") // To remove whitespaces
     val url = Http.QueryBuilder("https://www.wolframalpha.com/input/apiExplorer.jsp")
-            .append("input", query).append("format", "plaintext").append("output", "JSON").append("type", "full")
+            .append("input", q).append("format", "plaintext").append("output", "JSON").append("type", "full")
             .toString()
     val resp = Http.Request(url, "GET")
             .setHeader("Accept", "*/*")
@@ -39,7 +39,7 @@ private fun makeReq(query: String): Result? {
 @AliucordPlugin
 class Calc : Plugin() {
 
-    private val LOGGER = Logger("Calc")
+    private val log = Logger("Calc")
 
     override fun start(ctx: Context) {
         val args = listOf(
@@ -67,13 +67,20 @@ class Calc : Plugin() {
             val send = ctx.getBoolOrDefault("send", false)
             val isOutputOnly = ctx.getBoolOrDefault("output only", false)
 
-            val http = try { makeReq(input) } catch (t: Throwable) {
-                LOGGER.error(t)
+            val http = try {
+                makeReq(input)
+            } catch (t: Throwable) {
+                log.error(t)
                 return@registerCommand CommandResult("an unknown error occured.", null, false)
             }
+            log.debug("Wolfram API:\n$http")
 
-            val userInput = http!!.queryresult.inputstring
-            val output = http.queryresult.pods[1].subpods[0].plaintext
+            val userInput = http.queryresult?.inputstring
+            val output = http.queryresult?.pods?.get(1)?.subpods?.get(0)?.plaintext // guh
+
+            if (output == null) {
+                return@registerCommand CommandResult("No results found.", null, false)
+            }
 
             if (!send) {
                 val embed = MessageEmbedBuilder()

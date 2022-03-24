@@ -1,4 +1,4 @@
-## Calc
+## Wolfram
 
 Arguments:
 - `input` (required) - The question.
