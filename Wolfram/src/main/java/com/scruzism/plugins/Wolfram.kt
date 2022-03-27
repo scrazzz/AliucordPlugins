@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 scrazzz
+ * Copyright (c) 2021-present scrazzz
  * Licensed under the MIT License
  */
 
@@ -37,9 +37,9 @@ private fun makeReq(query: String): Result {
 }
 
 @AliucordPlugin
-class Calc : Plugin() {
+class Wolfram : Plugin() {
 
-    private val log = Logger("Calc")
+    private val log = Logger("Wolfram")
 
     override fun start(ctx: Context) {
         val args = listOf(
@@ -59,8 +59,8 @@ class Calc : Plugin() {
         )
 
         commands.registerCommand(
-                "calc",
-                "Calculate your question using wolfram API",
+                "wolfram",
+                "Find answers to your question using Wolfram API",
                 args
         ) { ctx ->
             val input = ctx.getRequiredString("input")
