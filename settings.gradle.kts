@@ -35,3 +35,6 @@ project(":ScreenshotAPI").projectDir = File("./ScreenshotAPI")
 
 include(":WhichMessage")
 project(":WhichMessage").projectDir = File("./WhichMessage")
+
+include(":Waifu.im")
+project(":Waifu.im").projectDir = File("./Waifu.im")
