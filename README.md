@@ -52,6 +52,10 @@ Find answers to your question using Wolfram API.
 - [Help](https://github.com/scrazzz/AliucordPlugins/tree/main/Wolfram/README.md)
 - [Download](https://github.com/scrazzz/AliucordPlugins/blob/builds/Wolfram.zip?raw=true)
 
+## Waifu.im
+Get images from [Waifu.im](https://waifu.im) API.
+- [Download](https://github.com/scrazzz/AliucordPlugins/blob/builds/Waifu.im.zip?raw=true)
+
 -----
 
 # Deprecated/Unmaintained Plugins
