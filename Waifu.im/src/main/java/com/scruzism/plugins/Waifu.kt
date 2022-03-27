@@ -79,7 +79,7 @@ class Waifu : Plugin() {
         )
 
         commands.registerCommand("waifu", "Get images from waifu.im API", args) {
-            val sfwTag = it.getStringOrDefault("sfw", "waifu")
+            val sfwTag = it.getStringOrDefault("tags", "waifu")
             val isNsfw = it.getBoolOrDefault("is_nsfw", false)
             val send = it.getBoolOrDefault("send", false)
 
