@@ -1,4 +1,14 @@
+# `Not Maintained Anymore`
+I have stopped maintaing AliucordPlugins (plugins in this repository). 
+Discord Mobile will be using React Native (RN) and the Aliucord Team is now focusing on Discord RN alpha verions of the app.
+
+I will update this README once Aliucord RN becomes stable.
+
+-----
+
 <div align="center">
+  AliucordPlugins - <i>by scruz</i>
+  <br>
   Plugins made for Aliucord, an Android Discord client mod.
 </div>
 
@@ -58,10 +68,10 @@ Get images from [Waifu.im](https://waifu.im) API.
 
 -----
 
-# Deprecated/Unmaintained Plugins
+## Deprecated/Unmaintained Plugins
 
-## ScreenshotAPI
+### ScreenshotAPI
 Most of the APIs requires you to pay for a subscription.
 
-## Calc
+### Calc
 The plugin is not "deprecated", its just renamed to Wolfram. Install Wolfram plugin instead.
