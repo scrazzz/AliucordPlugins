@@ -1,19 +1,26 @@
-<div align="center">
-  <h1><code>Not Maintained Anymore</code></h1>
-  
-  I have stopped maintaing AliucordPlugins (plugins in this repository).
-  
-  Discord Mobile is using React Native now and new features don't exist on the old version of the app which is what Aliucord runs on.
-
-  **Don not ask for help, I will not be updating any plugins here if it is broken.**
-</div>
+<h1>Archived</h1>
+All plugins in this repository are archived/unmaintained. Do not ask for help in DMs as I will not be fixing any broken plugins.
 
 <br>
 
+<div>
+  <details>
+  <summary>Why?</summary>
+
+  - Aliucord is running on the Java (a.k.a, "Old") version of Discord i.e., not the React Native version.
+
+  - New features don't work on the old version. E.g: Forums and interactions are buggy/unusable.
+
+  - Since most of the users have already switched to the React Native ("New") version, I don't feel like maintaining the plugins here anymore.
+  </details>
+</div>
+
 ---
 
+<h1>Original README</h1>
+
 <div align="center">
-  AliucordPlugins - <i>by (scruz) <code>@scruzism</code></i>
+  AliucordPlugins - <i>by scruz (<code>@scruzism</code>)</i>
   <br>
   Plugins made for Aliucord, an Android Discord client mod.
 </div>
